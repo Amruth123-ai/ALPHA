@@ -1,83 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
-        <!-- Licence Form View -->
-        <record id="view_alpha_agency_licence_form" model="ir.ui.view">
-            <field name="name">alpha.agency.licence.form</field>
-            <field name="model">alpha.agency.licence</field>
-            <field name="arch" type="xml">
-                <form string="Agency Licence">
-                    <header>
-                        <button name="action_issue" string="Issue Licence" type="object" class="oe_highlight" invisible="state != 'draft'" groups="alpha.group_alpha_agency_manager"/>
-                        <button name="action_activate" string="Activate" type="object" invisible="state != 'issued'"/>
-                        <button name="action_suspend" string="Suspend" type="object" invisible="state != 'active'" groups="alpha.group_alpha_agency_manager"/>
-                        <button name="action_expire" string="Expire" type="object" invisible="state != 'active'" groups="alpha.group_alpha_agency_manager"/>
-                        <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'issued', 'active')" groups="alpha.group_alpha_agency_manager"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,issued,active,suspended,expired"/>
-                    </header>
-                    <sheet>
-                        <div class="oe_title">
-                            <h1>
-                                <field name="licence_number" placeholder="Licence Number"/> - <field name="name" placeholder="Licence Name" required="1"/>
-                            </h1>
-                        </div>
+<odoo noupdate="1">
+    <!-- Licence Form View -->
+    <record id="view_alpha_agency_licence_form" model="ir.ui.view">
+        <field name="name">alpha.agency.licence.form</field>
+        <field name="model">alpha.agency.licence</field>
+        <field name="arch" type="xml">
+            <form string="Agency Licence">
+                <header>
+                    <button name="action_issue" string="Issue Licence" type="object" class="oe_highlight" invisible="state != 'draft'" groups="alpha.group_alpha_agency_manager"/>
+                    <button name="action_activate" string="Activate" type="object" invisible="state != 'issued'"/>
+                    <button name="action_suspend" string="Suspend" type="object" invisible="state != 'active'" groups="alpha.group_alpha_agency_manager"/>
+                    <button name="action_expire" string="Expire" type="object" invisible="state != 'active'" groups="alpha.group_alpha_agency_manager"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'issued', 'active')" groups="alpha.group_alpha_agency_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,issued,active,suspended,expired"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="licence_number" placeholder="Licence Number"/> - <field name="name" placeholder="Licence Name" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
                         <group>
-                            <group>
-                                <field name="agency_id"/>
-                                <field name="agency_type" readonly="1"/>
-                                <field name="licence_type"/>
-                                <field name="license_key"/>
-                            </group>
-                            <group>
-                                <field name="issue_date"/>
-                                <field name="expiry_date"/>
-                                <field name="validity_date"/>
-                                <field name="renewal_reminder_days"/>
-                                <field name="is_expiring_soon"/>
-                                <field name="days_to_expiry" readonly="1"/>
-                            </group>
+                            <field name="agency_id"/>
+                            <field name="agency_type" readonly="1"/>
+                            <field name="licence_type"/>
+                            <field name="license_key"/>
                         </group>
-                        <notebook>
-                            <page string="Issuing Authority">
-                                <group>
-                                    <field name="issuing_authority_id"/>
-                                    <field name="issuing_office"/>
-                                </group>
-                            </page>
-                            <page string="Documents">
-                                <field name="document_ids"/>
-                            </page>
-                            <page string="Description">
-                                <field name="description"/>
-                            </page>
-                        </notebook>
-                    </sheet>
-                    <chatter/>
-                </form>
-            </field>
-        </record>
+                        <group>
+                            <field name="issue_date"/>
+                            <field name="expiry_date"/>
+                            <field name="validity_date"/>
+                            <field name="renewal_reminder_days"/>
+                            <field name="is_expiring_soon"/>
+                            <field name="days_to_expiry" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Issuing Authority">
+                            <group>
+                                <field name="issuing_authority_id"/>
+                                <field name="issuing_office"/>
+                            </group>
+                        </page>
+                        <page string="Documents">
+                            <field name="document_ids"/>
+                        </page>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
 
-        <!-- Licence List View -->
-        <record id="view_alpha_agency_licence_tree" model="ir.ui.view">
-            <field name="name">alpha.agency.licence.tree</field>
-            <field name="model">alpha.agency.licence</field>
-            <field name="arch" type="xml">
-                <list string="Agency Licences">
-                    <field name="licence_number"/>
-                    <field name="name"/>
-                    <field name="agency_id"/>
-                    <field name="licence_type"/>
-                    <field name="expiry_date"/>
-                    <field name="state" widget="badge" decoration-success="state == 'active'" decoration-warning="state == 'issued'" decoration-danger="state in ['expired', 'cancelled']"/>
-                </list>
-            </field>
-        </record>
+    <!-- Licence List View -->
+    <record id="view_alpha_agency_licence_list" model="ir.ui.view">
+        <field name="name">alpha.agency.licence.list</field>
+        <field name="model">alpha.agency.licence</field>
+        <field name="arch" type="xml">
+            <list string="Agency Licences">
+                <field name="licence_number"/>
+                <field name="name"/>
+                <field name="agency_id"/>
+                <field name="licence_type"/>
+                <field name="expiry_date"/>
+                <field name="state" widget="badge" decoration-success="state == 'active'" decoration-warning="state == 'issued'" decoration-danger="state in ['expired', 'cancelled']"/>
+            </list>
+        </field>
+    </record>
 
-        <!-- Action -->
-        <record id="action_alpha_agency_licence" model="ir.actions.act_window">
-            <field name="name">Agency Licences</field>
-            <field name="res_model">alpha.agency.licence</field>
-            <field name="view_mode">list,form</field>
-        </record>
+    <!-- Action -->
+    <record id="action_alpha_agency_licence" model="ir.actions.act_window">
+        <field name="name">Agency Licences</field>
+        <field name="res_model">alpha.agency.licence</field>
+        <field name="view_mode">list,form</field>
+    </record>
 
 </odoo>

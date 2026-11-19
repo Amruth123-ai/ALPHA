@@ -175,6 +175,18 @@ class AgencyApplication(models.Model):
     )
 
     # ====================================================
+    # Company Field (from Agency)
+    # ====================================================
+
+    company_id = fields.Many2one(
+        "res.company",
+        related="agency_id.company_id",
+        store=True,
+        index=True,
+        readonly=True,
+    )
+
+    # ====================================================
     # Approval Fields
     # ====================================================
 
@@ -460,6 +472,13 @@ class AgencyApplicationDocument(models.Model):
         tracking=True,
         help="Map this document to a compliance requirement.",
     )
+    company_id = fields.Many2one(
+        "res.company",
+        related="application_id.company_id",
+        store=True,
+        index=True,
+        readonly=True,
+    )
 
     @api.onchange("file_id")
     def _onchange_file_id(self):
@@ -476,12 +495,10 @@ class ComplianceRequirement(models.Model):
     name = fields.Char(
         string="Requirement Name",
         required=True,
-        tracking=True,
     )
     code = fields.Char(
         string="Code",
         required=True,
-        tracking=True,
     )
     description = fields.Text(
         string="Description",
@@ -508,6 +525,13 @@ class ComplianceRequirement(models.Model):
         comodel_name="alpha.agency.application.document",
         inverse_name="mapping_id",
         string="Mapped Documents",
+    )
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        default=lambda self: self.env.company,
+        required=True,
+        index=True,
     )
 
     @api.constrains("code")
@@ -564,6 +588,13 @@ class ComplianceChecklist(models.Model):
     sequence = fields.Integer(
         string="Sequence",
         default=10,
+    )
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        default=lambda self: self.env.company,
+        required=True,
+        index=True,
     )
 
     @api.constrains("code")

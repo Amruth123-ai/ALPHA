@@ -299,6 +299,7 @@ class AgencyWorkflowVersion(models.Model):
     """Workflow version tracking (FR-07)."""
     _name = "alpha.agency.workflow.version"
     _description = "Agency Workflow Version"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "create_date desc"
 
     name = fields.Char(
@@ -355,6 +356,14 @@ class AgencyWorkflowVersion(models.Model):
         tracking=True,
     )
 
+    company_id = fields.Many2one(
+        "res.company",
+        related="workflow_id.company_id",
+        store=True,
+        index=True,
+        readonly=True,
+    )
+
     @api.constrains("workflow_id", "is_active")
     def _check_single_active_version(self):
         for record in self:
@@ -373,6 +382,7 @@ class AgencyWorkflowStep(models.Model):
     """Workflow step definition."""
     _name = "alpha.agency.workflow.step"
     _description = "Agency Workflow Step"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "sequence"
 
     name = fields.Char(
@@ -448,6 +458,13 @@ class AgencyWorkflowStep(models.Model):
         string="Notification Template",
         ondelete="set null",
     )
+    company_id = fields.Many2one(
+        "res.company",
+        related="workflow_id.company_id",
+        store=True,
+        index=True,
+        readonly=True,
+    )
 
     # ====================================================
     # Constraints
@@ -485,6 +502,7 @@ class AgencyWorkflowApproval(models.Model):
     """Approval rule for workflows."""
     _name = "alpha.agency.workflow.approval"
     _description = "Agency Workflow Approval Rule"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "sequence"
 
     name = fields.Char(
@@ -538,12 +556,20 @@ class AgencyWorkflowApproval(models.Model):
         default=7,
         help="Days allowed for approval.",
     )
+    company_id = fields.Many2one(
+        "res.company",
+        related="workflow_id.company_id",
+        store=True,
+        index=True,
+        readonly=True,
+    )
 
 
 class AgencyWorkflowTransition(models.Model):
     """State transition definition for workflow."""
     _name = "alpha.agency.workflow.transition"
     _description = "Agency Workflow Transition"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "sequence"
 
     name = fields.Char(
@@ -618,6 +644,13 @@ class AgencyWorkflowTransition(models.Model):
         string="Auto Transition",
         default=False,
         help="Automatically transition when condition is met.",
+    )
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        default=lambda self: self.env.company,
+        required=True,
+        index=True,
     )
 
     @api.constrains("source_state", "target_state")

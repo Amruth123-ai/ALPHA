@@ -75,11 +75,12 @@ class AgencyLicence(models.Model):
     )
 
     company_id = fields.Many2one(
-    "res.company",
-    related="agency_id.company_id",
-    store=True,
-    index=True,
-)
+        "res.company",
+        related="agency_id.company_id",
+        store=True,
+        index=True,
+        readonly=True,
+    )
 
     # ====================================================
     # Validity and Status
@@ -144,7 +145,7 @@ class AgencyLicence(models.Model):
     document_ids = fields.One2many(
         comodel_name="dms.file",
         inverse_name="res_id",
-        domain="[('res_model', '=', 'alpha.agency.licence'), ('is_licence_doc', '=', True)]",
+        domain="[('res_model', '=', 'alpha.agency.licence')]",
         string="Licence Documents",
     )
     original_document_id = fields.Many2one(
@@ -377,6 +378,7 @@ class AgencyCredential(models.Model):
     """Credentials model for additional agency credentials (FR-10)."""
     _name = "alpha.agency.credential"
     _description = "Agency Credential"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "create_date desc"
 
     name = fields.Char(
@@ -394,6 +396,7 @@ class AgencyCredential(models.Model):
         ondelete="cascade",
         index=True,
         required=True,
+        tracking=True,
     )
     credential_type = fields.Selection(
         selection=[
@@ -425,6 +428,13 @@ class AgencyCredential(models.Model):
         string="Credential Document",
         ondelete="set null",
         tracking=True,
+    )
+    company_id = fields.Many2one(
+        "res.company",
+        related="agency_id.company_id",
+        store=True,
+        index=True,
+        readonly=True,
     )
     is_valid = fields.Boolean(
         string="Valid",
