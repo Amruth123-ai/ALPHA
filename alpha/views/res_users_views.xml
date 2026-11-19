@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_users_form_alpha" model="ir.ui.view">
+        <field name="name">res.users.form.alpha</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Agency Roles" name="alpha_agency_roles">
+                    <group>
+                        <field name="is_auditor"/>
+                        <field name="is_testing_directorate"/>
+                        <field name="is_licensing_officer"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

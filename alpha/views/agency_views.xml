@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form View -->
+    <record id="view_alpha_agency_form" model="ir.ui.view">
+        <field name="name">alpha.agency.form</field>
+        <field name="model">alpha.agency</field>
+        <field name="arch" type="xml">
+            <form string="Agency">
+                <header>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="oe_highlight"
+                            invisible="state != 'draft'"
+                            groups="alpha.group_alpha_agency_manager"/>
+                    <button name="action_in_production" string="Move to Production" type="object"
+                            class="oe_highlight"
+                            invisible="state != 'approved'"
+                            groups="alpha.group_alpha_agency_manager"/>
+                    <button name="action_suspend" string="Suspend" type="object"
+                            invisible="state not in ('approved', 'in_production')"
+                            groups="alpha.group_alpha_agency_manager"/>
+                    <button name="action_deboard" string="Deboard" type="object"
+                            invisible="state not in ('approved', 'in_production', 'suspended')"
+                            groups="alpha.group_alpha_agency_manager"/>
+                    <button name="action_unlock" string="Unlock" type="object"
+                            invisible="not is_locked"
+                            groups="alpha.group_alpha_agency_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,pending,approved,in_production,suspended,deboarded"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <!-- Full XML IDs as strings: resolved on click, so file load order does not matter -->
+                        <button name="alpha.action_alpha_agency_application" type="action"
+                                class="oe_stat_button" icon="fa-file-text-o"
+                                invisible="not application_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Application</span>
+                            </div>
+                        </button>
+                        <button name="alpha.action_alpha_agency_audit" type="action"
+                                class="oe_stat_button" icon="fa-check-square-o">
+                            <field name="audit_count" string="Audits" widget="statinfo"/>
+                        </button>
+                        <button name="alpha.action_alpha_agency_licence" type="action"
+                                class="oe_stat_button" icon="fa-certificate">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Licences</span>
+                            </div>
+                        </button>
+                        <button name="alpha.action_alpha_agency_device" type="action"
+                                class="oe_stat_button" icon="fa-desktop">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Devices</span>
+                            </div>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Locked" bg_color="text-bg-danger"
+                            invisible="not is_locked"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="code" readonly="1"/> - <field name="name" placeholder="Agency Name" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="agency_type" widget="selection"/>
+                            <field name="partner_id" options="{'no_create': True}"/>
+                            <field name="primary_contact_id"/>
+                            <field name="parent_agency_id"/>
+                            <field name="organizational_unit"/>
+                        </group>
+                        <group>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="website"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="is_locked" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Address &amp; Contact">
+                            <group>
+                                <field name="address"/>
+                                <field name="city"/>
+                                <field name="state_id"/>
+                                <field name="country_id"/>
+                                <field name="zip_code"/>
+                            </group>
+                        </page>
+                        <page string="Authorized Users">
+                            <field name="user_ids" widget="many2many_tags"/>
+                        </page>
+                        <page string="Description">
+                            <field name="description" placeholder="Agency Description..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_alpha_agency_tree" model="ir.ui.view">
+        <field name="name">alpha.agency.list</field>
+        <field name="model">alpha.agency</field>
+        <field name="arch" type="xml">
+            <list string="Agencies" multi_edit="1">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="agency_type"/>
+                <field name="organizational_unit"/>
+                <field name="city"/>
+                <field name="state" widget="badge"
+                       decoration-success="state in ('approved', 'in_production')"
+                       decoration-warning="state == 'suspended'"
+                       decoration-danger="state == 'deboarded'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_alpha_agency_search" model="ir.ui.view">
+        <field name="name">alpha.agency.search</field>
+        <field name="model">alpha.agency</field>
+        <field name="arch" type="xml">
+            <search string="Search Agencies">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="agency_type"/>
+                <separator/>
+                <filter string="Type A" name="type_a" domain="[('agency_type', '=', 'type_a')]"/>
+                <filter string="Type B" name="type_b" domain="[('agency_type', '=', 'type_b')]"/>
+                <filter string="Type C" name="type_c" domain="[('agency_type', '=', 'type_c')]"/>
+                <filter string="Type D" name="type_d" domain="[('agency_type', '=', 'type_d')]"/>
+                <filter string="Type E" name="type_e" domain="[('agency_type', '=', 'type_e')]"/>
+                <separator/>
+                <filter string="In Production" name="in_production" domain="[('state', '=', 'in_production')]"/>
+                <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Suspended" name="suspended" domain="[('state', '=', 'suspended')]"/>
+                <filter string="Deboarded" name="deboarded" domain="[('state', '=', 'deboarded')]"/>
+                <group string="Group By">
+                    <filter string="Agency Type" name="group_by_agency_type" context="{'group_by': 'agency_type'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Organizational Unit" name="group_by_org_unit" context="{'group_by': 'organizational_unit'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_alpha_agency" model="ir.actions.act_window">
+        <field name="name">Agencies</field>
+        <field name="res_model">alpha.agency</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_alpha_agency_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Agency!
+            </p>
+            <p>
+                Manage agency registrations, onboarding, compliance, and lifecycle.
+            </p>
+        </field>
+    </record>
+
+</odoo>

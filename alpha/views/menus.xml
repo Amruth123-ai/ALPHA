@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- Root Menu -->
+        <menuitem id="menu_alpha_root" name="Agency Management" web_icon="alpha,static/description/icon.png"/>
+
+        <!-- Agency Submenu -->
+        <menuitem id="menu_alpha_agency" name="Agencies" parent="menu_alpha_root" sequence="10"/>
+        <menuitem id="menu_alpha_agency_list" name="Agencies" parent="menu_alpha_agency" action="action_alpha_agency" sequence="1"/>
+        <menuitem id="menu_alpha_application_list" name="Applications" parent="menu_alpha_agency" action="action_alpha_agency_application" sequence="2"/>
+
+        <!-- Compliance Submenu -->
+        <menuitem id="menu_alpha_compliance" name="Compliance" parent="menu_alpha_root" sequence="20"/>
+        <menuitem id="menu_alpha_compliance_requirement" name="Requirements" parent="menu_alpha_compliance" action="action_alpha_compliance_requirement" sequence="1"/>
+        <menuitem id="menu_alpha_compliance_checklist" name="Checklists" parent="menu_alpha_compliance" action="action_alpha_compliance_checklist" sequence="2"/>
+        <menuitem id="menu_alpha_audit_list" name="Audits" parent="menu_alpha_compliance" action="action_alpha_agency_audit" sequence="3"/>
+
+        <!-- Credentials & Devices Submenu -->
+        <menuitem id="menu_alpha_technical" name="Technical" parent="menu_alpha_root" sequence="30"/>
+        <menuitem id="menu_alpha_licence_list" name="Licences" parent="menu_alpha_technical" action="action_alpha_agency_licence" sequence="1"/>
+        <menuitem id="menu_alpha_device_list" name="Devices" parent="menu_alpha_technical" action="action_alpha_agency_device" sequence="2"/>
+        <menuitem id="menu_alpha_credential_list" name="Credentials" parent="menu_alpha_technical" action="action_alpha_agency_credential" sequence="3"/>
+
+        <!-- Workflow Submenu -->
+        <menuitem id="menu_alpha_config" name="Configuration" parent="menu_alpha_root" sequence="40"/>
+        <menuitem id="menu_alpha_workflow_list" name="Workflows" parent="menu_alpha_config" action="action_alpha_agency_workflow" sequence="1"/>
+
+    </odoo>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+        <!-- Portal My Agencies Breadcrumb -->
+        <template id="portal_my_home_menu_agency" name="Portal layout : Agency menu" inherit_id="portal.portal_breadcrumbs" priority="20">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'my_agencies' or agency" class="breadcrumb-item">
+                    <a t-if="agency" t-attf-href="/my/agency?#{access_token}" title="Agencies">Agencies</a>
+                    <t t-else="">Agencies</t>
+                </li>
+                <li t-if="agency" class="breadcrumb-item active">
+                    <span t-field="agency.name"/>
+                </li>
+            </xpath>
+        </template>
+
+        <!-- My Agencies List -->
+        <template id="portal_my_agencies" name="My Agencies">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+                <div class="o_portal_my_doc_table">
+                    <div class="container mb-4">
+                        <h3>My Agencies
+                            <small class="text-muted" t-if="agencies">(<t t-esc="len(agencies)"/>)</small>
+                        </h3>
+                    </div>
+
+                    <t t-if="not agencies">
+                        <div class="alert alert-warning" role="alert">
+                            There are currently no agencies assigned to your account.
+                        </div>
+                    </t>
+
+                    <t t-if="agencies">
+                        <table class="table table-striped table-hover o_portal_my_doc_table">
+                            <thead>
+                                <tr class="active">
+                                    <th>Agency Code</th>
+                                    <th>Agency Name</th>
+                                    <th>Agency Type</th>
+                                    <th>Status</th>
+                                    <th>City</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="agencies" t-as="agency">
+                                    <td>
+                                        <a t-attf-href="/my/agency/#{agency.id}">
+                                            <span t-field="agency.code"/>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a t-attf-href="/my/agency/#{agency.id}">
+                                            <span t-field="agency.name"/>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span t-field="agency.agency_type"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="agency.state" t-att-class="'badge text-bg-' + ('success' if agency.state in ['approved', 'in_production'] else 'warning')"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="agency.city"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </template>
+
+        <!-- Agency Details -->
+        <template id="portal_agency_details" name="Agency Details">
+            <t t-call="portal.portal_layout">
+                <div class="container">
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">
+                                <span t-field="agency.name"/>
+                                <span class="badge float-end text-bg-light" t-field="agency.state"/>
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Agency Code:</strong> <span t-field="agency.code"/></p>
+                                    <p><strong>Agency Type:</strong> <span t-field="agency.agency_type"/></p>
+                                    <p><strong>Organizational Unit:</strong> <span t-field="agency.organizational_unit"/></p>
+                                    <p><strong>Email:</strong> <span t-field="agency.email"/></p>
+                                    <p><strong>Phone:</strong> <span t-field="agency.phone"/></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Address:</strong> <span t-field="agency.address"/></p>
+                                    <p><strong>City:</strong> <span t-field="agency.city"/></p>
+                                    <p><strong>Website:</strong> <span t-field="agency.website"/></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Tabs -->
+                    <ul class="nav nav-tabs mb-3" id="agencyTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents" type="button" role="tab">Documents (<t t-esc="len(documents)"/>)</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="audits-tab" data-bs-toggle="tab" data-bs-target="#audits" type="button" role="tab">Audits (<t t-esc="len(audits)"/>)</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="licences-tab" data-bs-toggle="tab" data-bs-target="#licences" type="button" role="tab">Licences (<t t-esc="len(licences)"/>)</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="devices-tab" data-bs-toggle="tab" data-bs-target="#devices" type="button" role="tab">Devices (<t t-esc="len(devices)"/>)</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="agencyTabsContent">
+                        <!-- Documents Tab -->
+                        <div class="tab-pane fade show active" id="documents" role="tabpanel">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h5>Documents</h5>
+                            </div>
+                            <t t-if="not documents">
+                                <p class="text-muted">No documents found.</p>
+                            </t>
+                            <t t-if="documents">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                            <th>Upload Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="documents" t-as="doc">
+                                            <td><span t-field="doc.name"/></td>
+                                            <td><span t-field="doc.res_model"/></td>
+                                            <td><span t-field="doc.create_date"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </t>
+                        </div>
+
+                        <!-- Audits Tab -->
+                        <div class="tab-pane fade" id="audits" role="tabpanel">
+                            <h5 class="mb-3">Audits</h5>
+                            <t t-if="not audits">
+                                <p class="text-muted">No audits found.</p>
+                            </t>
+                            <t t-if="audits">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Audit Code</th>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                            <th>State</th>
+                                            <th>Scheduled Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="audits" t-as="audit">
+                                            <td>
+                                                <a t-attf-href="/my/agency/audit/#{audit.id}">
+                                                    <span t-field="audit.audit_code"/>
+                                                </a>
+                                            </td>
+                                            <td><span t-field="audit.name"/></td>
+                                            <td><span t-field="audit.audit_type"/></td>
+                                            <td><span t-field="audit.state"/></td>
+                                            <td><span t-field="audit.scheduled_date"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </t>
+                        </div>
+
+                        <!-- Licences Tab -->
+                        <div class="tab-pane fade" id="licences" role="tabpanel">
+                            <h5 class="mb-3">Licences</h5>
+                            <t t-if="not licences">
+                                <p class="text-muted">No licences found.</p>
+                            </t>
+                            <t t-if="licences">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Licence Number</th>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th>Expiry Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="licences" t-as="licence">
+                                            <td>
+                                                <a t-attf-href="/my/agency/licence/#{licence.id}">
+                                                    <span t-field="licence.licence_number"/>
+                                                </a>
+                                            </td>
+                                            <td><span t-field="licence.name"/></td>
+                                            <td><span t-field="licence.licence_type"/></td>
+                                            <td><span t-field="licence.state"/></td>
+                                            <td><span t-field="licence.expiry_date"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </t>
+                        </div>
+
+                        <!-- Devices Tab -->
+                        <div class="tab-pane fade" id="devices" role="tabpanel">
+                            <h5 class="mb-3">Devices</h5>
+                            <t t-if="not devices">
+                                <p class="text-muted">No devices found.</p>
+                            </t>
+                            <t t-if="devices">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Device Code</th>
+                                            <th>Name</th>
+                                            <th>Manufacturer</th>
+                                            <th>Status</th>
+                                            <th>Testing Result</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="devices" t-as="device">
+                                            <td><span t-field="device.device_code"/></td>
+                                            <td><span t-field="device.name"/></td>
+                                            <td><span t-field="device.manufacturer"/></td>
+                                            <td><span t-field="device.state"/></td>
+                                            <td><span t-field="device.testing_result"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Access Denied -->
+        <template id="portal_access_denied" name="Access Denied">
+            <t t-call="portal.portal_layout">
+                <div class="container">
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Access Denied</h4>
+                        <p>You do not have permission to view this agency or application.</p>
+                        <hr/>
+                        <p class="mb-0">Please contact your administrator if you believe this is an error.</p>
+                    </div>
+                    <a href="/my/agency" class="btn btn-primary">Back to Agencies</a>
+                </div>
+            </t>
+        </template>
+
+</odoo>
