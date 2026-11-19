@@ -272,12 +272,13 @@ class AgencyApplication(models.Model):
     # Override Methods
     # ====================================================
 
-    @api.model
-    def create(self, vals):
-        if vals.get("application_number", "/") == "/":
-            seq = self.env["ir.sequence"].next_by_code("alpha.agency.application")
-            vals["application_number"] = seq
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("application_number", "/") == "/":
+                seq = self.env["ir.sequence"].next_by_code("alpha.agency.application")
+                vals["application_number"] = seq
+        return super().create(vals_list)
 
     # ====================================================
     # Actions
