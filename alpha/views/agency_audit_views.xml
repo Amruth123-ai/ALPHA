@@ -1,176 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
-        <!-- Audit Form View -->
-        <record id="view_alpha_agency_audit_form" model="ir.ui.view">
-            <field name="name">alpha.agency.audit.form</field>
-            <field name="model">alpha.agency.audit</field>
-            <field name="arch" type="xml">
-                <form string="Agency Audit">
-                    <header>
-                        <button name="action_start" string="Start Audit" type="object" class="oe_highlight" invisible="state != 'planned'"/>
-                        <button name="action_complete" string="Complete" type="object" invisible="state != 'in_progress'"/>
-                        <button name="action_identify_findings" string="Identify Findings" type="object" invisible="state != 'completed'"/>
-                        <button name="action_corrective_action" string="Corrective Action" type="object" invisible="state != 'findings'"/>
-                        <button name="action_close" string="Close Audit" type="object" class="oe_highlight" invisible="state != 'corrective_action'"/>
-                        <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('planned', 'in_progress')"/>
-                        <field name="state" widget="statusbar" statusbar_visible="planned,in_progress,completed,findings,corrective_action,closed"/>
-                    </header>
-                    <sheet>
-                        <div class="oe_title">
-                            <h1>
-                                <field name="audit_code" readonly="1"/> - <field name="name" placeholder="Audit Name" required="1"/>
-                            </h1>
-                        </div>
+<odoo noupdate="1">
+    <!-- Audit Form View -->
+    <record id="view_alpha_agency_audit_form" model="ir.ui.view">
+        <field name="name">alpha.agency.audit.form</field>
+        <field name="model">alpha.agency.audit</field>
+        <field name="arch" type="xml">
+            <form string="Agency Audit">
+                <header>
+                    <button name="action_start" string="Start Audit" type="object" class="oe_highlight" invisible="state != 'planned'"/>
+                    <button name="action_complete" string="Complete" type="object" invisible="state != 'in_progress'"/>
+                    <button name="action_identify_findings" string="Identify Findings" type="object" invisible="state != 'completed'"/>
+                    <button name="action_corrective_action" string="Corrective Action" type="object" invisible="state != 'findings'"/>
+                    <button name="action_close" string="Close Audit" type="object" class="oe_highlight" invisible="state != 'corrective_action'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('planned', 'in_progress')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="planned,in_progress,completed,findings,corrective_action,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="audit_code" readonly="1"/> - <field name="name" placeholder="Audit Name" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
                         <group>
-                            <group>
-                                <field name="agency_id"/>
-                                <field name="audit_type"/>
-                                <field name="cycle_type"/>
-                                <field name="priority"/>
-                                <field name="auditor_id"/>
-                            </group>
-                            <group>
-                                <field name="scheduled_date"/>
-                                <field name="actual_start_date"/>
-                                <field name="actual_end_date"/>
-                                <field name="location"/>
-                            </group>
-                        </group>
-                        <notebook>
-                            <page string="Findings">
-                                <field name="finding_ids">
-                                    <list>
-                                        <field name="name"/>
-                                        <field name="severity"/>
-                                        <field name="state"/>
-                                        <field name="resolved_date"/>
-                                    </list>
-                                </field>
-                            </page>
-                            <page string="Corrective Actions">
-                                <field name="corrective_action_ids">
-                                    <list>
-                                        <field name="name"/>
-                                        <field name="finding_id"/>
-                                        <field name="assigned_to"/>
-                                        <field name="due_date"/>
-                                        <field name="state"/>
-                                    </list>
-                                </field>
-                            </page>
-                            <page string="Evidence">
-                                <field name="evidence_ids"/>
-                            </page>
-                            <page string="Description">
-                                <field name="description"/>
-                            </page>
-                        </notebook>
-                    </sheet>
-                    <chatter/>
-                </form>
-            </field>
-        </record>
-
-        <!-- Finding Form View -->
-        <record id="view_alpha_agency_audit_finding_form" model="ir.ui.view">
-            <field name="name">alpha.agency.audit.finding.form</field>
-            <field name="model">alpha.agency.audit.finding</field>
-            <field name="arch" type="xml">
-                <form string="Audit Finding">
-                    <header>
-                        <button name="action_assign_corrective_action" string="Assign Corrective Action" type="object" class="oe_highlight" invisible="state != 'open'"/>
-                        <button name="action_resolve" string="Resolve" type="object" invisible="state != 'in_progress'"/>
-                        <button name="action_close" string="Close Finding" type="object" invisible="state != 'resolved'"/>
-                        <field name="state" widget="statusbar" statusbar_visible="open,in_progress,resolved,closed"/>
-                    </header>
-                    <sheet>
-                        <div class="oe_title">
-                            <h1>
-                                <field name="name" placeholder="Finding Title" required="1"/>
-                            </h1>
-                        </div>
-                        <group>
-                            <group>
-                                <field name="audit_id"/>
-                                <field name="agency_id" readonly="1"/>
-                                <field name="severity"/>
-                            </group>
-                            <group>
-                                <field name="evidence_file_id"/>
-                                <field name="created_by" readonly="1"/>
-                            </group>
+                            <field name="agency_id"/>
+                            <field name="audit_type"/>
+                            <field name="cycle_type"/>
+                            <field name="priority"/>
+                            <field name="auditor_id"/>
                         </group>
                         <group>
+                            <field name="scheduled_date"/>
+                            <field name="actual_start_date"/>
+                            <field name="actual_end_date"/>
+                            <field name="location"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Findings">
+                            <field name="finding_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="severity"/>
+                                    <field name="state"/>
+                                    <field name="resolved_date"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Corrective Actions">
+                            <field name="corrective_action_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="finding_id"/>
+                                    <field name="assigned_to"/>
+                                    <field name="due_date"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Evidence">
+                            <field name="evidence_ids"/>
+                        </page>
+                        <page string="Description">
                             <field name="description"/>
-                        </group>
-                        <group string="Resolution">
-                            <field name="resolution"/>
-                            <field name="resolved_date" readonly="1"/>
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
 
-        <!-- Corrective Action Form View -->
-        <record id="view_alpha_agency_audit_corrective_action_form" model="ir.ui.view">
-            <field name="name">alpha.agency.audit.corrective.action.form</field>
-            <field name="model">alpha.agency.audit.corrective.action</field>
-            <field name="arch" type="xml">
-                <form string="Corrective Action">
-                    <header>
-                        <button name="action_start" string="Start Action" type="object" class="oe_highlight" invisible="state != 'draft'"/>
-                        <button name="action_complete" string="Complete Action" type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
-                        <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'in_progress')"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done"/>
-                    </header>
-                    <sheet>
-                        <div class="oe_title">
-                            <h1>
-                                <field name="name" placeholder="Action Title" required="1"/>
-                            </h1>
-                        </div>
+    <!-- Finding Form View -->
+    <record id="view_alpha_agency_audit_finding_form" model="ir.ui.view">
+        <field name="name">alpha.agency.audit.finding.form</field>
+        <field name="model">alpha.agency.audit.finding</field>
+        <field name="arch" type="xml">
+            <form string="Audit Finding">
+                <header>
+                    <button name="action_assign_corrective_action" string="Assign Corrective Action" type="object" class="oe_highlight" invisible="state != 'open'"/>
+                    <button name="action_resolve" string="Resolve" type="object" invisible="state != 'in_progress'"/>
+                    <button name="action_close" string="Close Finding" type="object" invisible="state != 'resolved'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="open,in_progress,resolved,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Finding Title" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
                         <group>
-                            <group>
-                                <field name="audit_id"/>
-                                <field name="finding_id"/>
-                                <field name="assigned_to"/>
-                            </group>
-                            <group>
-                                <field name="due_date"/>
-                                <field name="completed_date" readonly="1"/>
-                            </group>
+                            <field name="audit_id"/>
+                            <field name="agency_id" readonly="1"/>
+                            <field name="severity"/>
                         </group>
+                        <group>
+                            <field name="evidence_file_id"/>
+                            <field name="created_by" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
                         <field name="description"/>
-                        <field name="notes"/>
-                    </sheet>
-                </form>
-            </field>
-        </record>
+                    </group>
+                    <group string="Resolution">
+                        <field name="resolution"/>
+                        <field name="resolved_date" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-        <!-- Audit List View -->
-        <record id="view_alpha_agency_audit_tree" model="ir.ui.view">
-            <field name="name">alpha.agency.audit.tree</field>
-            <field name="model">alpha.agency.audit</field>
-            <field name="arch" type="xml">
-                <list string="Agency Audits">
-                    <field name="audit_code"/>
-                    <field name="name"/>
-                    <field name="agency_id"/>
-                    <field name="audit_type"/>
-                    <field name="scheduled_date"/>
-                    <field name="auditor_id"/>
-                    <field name="state" widget="badge" decoration-success="state == 'closed'" decoration-warning="state in ['in_progress', 'planned']" decoration-danger="state == 'cancelled'"/>
-                </list>
-            </field>
-        </record>
+    <!-- Corrective Action Form View -->
+    <record id="view_alpha_agency_audit_corrective_action_form" model="ir.ui.view">
+        <field name="name">alpha.agency.audit.corrective.action.form</field>
+        <field name="model">alpha.agency.audit.corrective.action</field>
+        <field name="arch" type="xml">
+            <form string="Corrective Action">
+                <header>
+                    <button name="action_start" string="Start Action" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_complete" string="Complete Action" type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'in_progress')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Action Title" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="audit_id"/>
+                            <field name="finding_id"/>
+                            <field name="assigned_to"/>
+                        </group>
+                        <group>
+                            <field name="due_date"/>
+                            <field name="completed_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="description"/>
+                    <field name="notes"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-        <!-- Actions -->
-        <record id="action_alpha_agency_audit" model="ir.actions.act_window">
-            <field name="name">Agency Audits</field>
-            <field name="res_model">alpha.agency.audit</field>
-            <field name="view_mode">list,form</field>
-        </record>
+    <!-- Audit List View -->
+    <record id="view_alpha_agency_audit_list" model="ir.ui.view">
+        <field name="name">alpha.agency.audit.list</field>
+        <field name="model">alpha.agency.audit</field>
+        <field name="arch" type="xml">
+            <list string="Agency Audits">
+                <field name="audit_code"/>
+                <field name="name"/>
+                <field name="agency_id"/>
+                <field name="audit_type"/>
+                <field name="scheduled_date"/>
+                <field name="auditor_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'closed'" decoration-warning="state in ['in_progress', 'planned']" decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_alpha_agency_audit" model="ir.actions.act_window">
+        <field name="name">Agency Audits</field>
+        <field name="res_model">alpha.agency.audit</field>
+        <field name="view_mode">list,form</field>
+    </record>
 
 </odoo>

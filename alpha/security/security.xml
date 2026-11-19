@@ -1,237 +1,441 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data noupdate="1">
+<odoo noupdate="1">
+    <!-- ==================================================== -->
+    <!-- MODULE CATEGORY -->
+    <!-- ==================================================== -->
 
-        <!-- ==================================================== -->
-        <!-- MODULE CATEGORY -->
-        <!-- ==================================================== -->
+    <record id="module_category_alpha_agency" model="ir.module.category">
+        <field name="name">Agency Management</field>
+        <field name="description">
+            Helps manage agency lifecycle, onboarding, compliance, and audits.
+        </field>
+        <field name="sequence">20</field>
+    </record>
 
-        <record id="module_category_alpha_agency" model="ir.module.category">
-            <field name="name">Agency Management</field>
-            <field name="description">
-                Helps manage agency lifecycle, onboarding, compliance, and audits.
-            </field>
-            <field name="sequence">20</field>
-        </record>
 
+    <!-- ==================================================== -->
+    <!-- ODOO 19 PRIVILEGE -->
+    <!-- ==================================================== -->
 
-        <!-- ==================================================== -->
-        <!-- ODOO 19 PRIVILEGE -->
-        <!-- ==================================================== -->
+    <record id="privilege_alpha_agency" model="res.groups.privilege">
+        <field name="name">Agency Management</field>
+        <field name="description">
+            Privileges for the Alpha Agency Management platform.
+        </field>
+        <field name="category_id" ref="module_category_alpha_agency"/>
+        <field name="sequence">20</field>
+    </record>
 
-        <record id="privilege_alpha_agency" model="res.groups.privilege">
-            <field name="name">Agency Management</field>
-            <field name="description">
-                Privileges for the Alpha Agency Management platform.
-            </field>
-            <field name="category_id" ref="module_category_alpha_agency"/>
-            <field name="sequence">20</field>
-        </record>
 
+    <!-- ==================================================== -->
+    <!-- AGENCY USER -->
+    <!-- ==================================================== -->
 
-        <!-- ==================================================== -->
-        <!-- AGENCY USER -->
-        <!-- ==================================================== -->
+    <record id="group_alpha_agency_user" model="res.groups">
+        <field name="name">Agency User</field>
 
-        <record id="group_alpha_agency_user" model="res.groups">
-            <field name="name">Agency User</field>
+        <!-- Odoo 19 -->
+        <field name="privilege_id" ref="privilege_alpha_agency"/>
 
-            <!-- Odoo 19 -->
-            <field name="privilege_id" ref="privilege_alpha_agency"/>
+        <field name="implied_ids"
+               eval="[(4, ref('base.group_user'))]"/>
 
-            <field name="implied_ids"
-                   eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">
+            Users can view and create agency applications,
+            audits, and devices.
+        </field>
+    </record>
 
-            <field name="comment">
-                Users can view and create agency applications,
-                audits, and devices.
-            </field>
-        </record>
 
+    <!-- ==================================================== -->
+    <!-- AGENCY MANAGER -->
+    <!-- ==================================================== -->
 
-        <!-- ==================================================== -->
-        <!-- AGENCY MANAGER -->
-        <!-- ==================================================== -->
+    <record id="group_alpha_agency_manager" model="res.groups">
+        <field name="name">Agency Manager</field>
 
-        <record id="group_alpha_agency_manager" model="res.groups">
-            <field name="name">Agency Manager</field>
+        <!-- Odoo 19 -->
+        <field name="privilege_id" ref="privilege_alpha_agency"/>
 
-            <!-- Odoo 19 -->
-            <field name="privilege_id" ref="privilege_alpha_agency"/>
+        <field name="implied_ids"
+               eval="[(4, ref('group_alpha_agency_user'))]"/>
 
-            <field name="implied_ids"
-                   eval="[(4, ref('group_alpha_agency_user'))]"/>
+        <!-- Odoo 19: users field became user_ids -->
+        <field name="user_ids"
+               eval="[
+                   (4, ref('base.user_root')),
+                   (4, ref('base.user_admin'))
+               ]"/>
 
-            <!-- Odoo 19: users field became user_ids -->
-            <field name="user_ids"
-                   eval="[
-                       (4, ref('base.user_root')),
-                       (4, ref('base.user_admin'))
-                   ]"/>
+        <field name="comment">
+            Managers have full access to all agency lifecycle
+            configurations and approvals.
+        </field>
+    </record>
 
-            <field name="comment">
-                Managers have full access to all agency lifecycle
-                configurations and approvals.
-            </field>
-        </record>
 
+    <!-- ==================================================== -->
+    <!-- HEAD OFFICE -->
+    <!-- ==================================================== -->
 
-        <!-- ==================================================== -->
-        <!-- HEAD OFFICE -->
-        <!-- ==================================================== -->
+    <record id="group_alpha_ho" model="res.groups">
+        <field name="name">Head Office (HO)</field>
 
-        <record id="group_alpha_ho" model="res.groups">
-            <field name="name">Head Office (HO)</field>
+        <!-- Odoo 19 -->
+        <field name="privilege_id" ref="privilege_alpha_agency"/>
 
-            <!-- Odoo 19 -->
-            <field name="privilege_id" ref="privilege_alpha_agency"/>
+        <field name="implied_ids"
+               eval="[(4, ref('group_alpha_agency_manager'))]"/>
 
-            <field name="implied_ids"
-                   eval="[(4, ref('group_alpha_agency_manager'))]"/>
+        <field name="comment">
+            Head Office organizational unit with overarching oversight.
+        </field>
+    </record>
 
-            <field name="comment">
-                Head Office organizational unit with overarching oversight.
-            </field>
-        </record>
 
+    <!-- ==================================================== -->
+    <!-- REGIONAL OFFICE -->
+    <!-- ==================================================== -->
 
-        <!-- ==================================================== -->
-        <!-- REGIONAL OFFICE -->
-        <!-- ==================================================== -->
+    <record id="group_alpha_ro" model="res.groups">
+        <field name="name">Regional Office (RO)</field>
 
-        <record id="group_alpha_ro" model="res.groups">
-            <field name="name">Regional Office (RO)</field>
+        <!-- Odoo 19 -->
+        <field name="privilege_id" ref="privilege_alpha_agency"/>
 
-            <!-- Odoo 19 -->
-            <field name="privilege_id" ref="privilege_alpha_agency"/>
+        <field name="implied_ids"
+               eval="[(4, ref('group_alpha_agency_user'))]"/>
 
-            <field name="implied_ids"
-                   eval="[(4, ref('group_alpha_agency_user'))]"/>
+        <field name="comment">
+            Regional Office organizational unit.
+        </field>
+    </record>
 
-            <field name="comment">
-                Regional Office organizational unit.
-            </field>
-        </record>
 
+    <!-- ==================================================== -->
+    <!-- TECHNICAL CENTRE -->
+    <!-- ==================================================== -->
 
-        <!-- ==================================================== -->
-        <!-- TECHNICAL CENTRE -->
-        <!-- ==================================================== -->
+    <record id="group_alpha_tc" model="res.groups">
+        <field name="name">Technical Centre (TC)</field>
 
-        <record id="group_alpha_tc" model="res.groups">
-            <field name="name">Technical Centre (TC)</field>
+        <!-- Odoo 19 -->
+        <field name="privilege_id" ref="privilege_alpha_agency"/>
 
-            <!-- Odoo 19 -->
-            <field name="privilege_id" ref="privilege_alpha_agency"/>
+        <field name="implied_ids"
+               eval="[(4, ref('group_alpha_agency_user'))]"/>
 
-            <field name="implied_ids"
-                   eval="[(4, ref('group_alpha_agency_user'))]"/>
+        <field name="comment">
+            Technical Centre for device testing and certification.
+        </field>
+    </record>
 
-            <field name="comment">
-                Technical Centre for device testing and certification.
-            </field>
-        </record>
 
+    <!-- ==================================================== -->
+    <!-- RECORD RULES -->
+    <!-- ==================================================== -->
 
-        <!-- ==================================================== -->
-        <!-- RECORD RULES -->
-        <!-- ==================================================== -->
 
+    <!-- ==================================================== -->
+    <!-- AGENCY MULTI-COMPANY RULE -->
+    <!-- ==================================================== -->
 
-        <!-- ==================================================== -->
-        <!-- AGENCY MULTI-COMPANY RULE -->
-        <!-- ==================================================== -->
+    <record id="agency_company_rule" model="ir.rule">
+        <field name="name">Agency Multi-Company Rule</field>
 
-        <record id="agency_company_rule" model="ir.rule">
-            <field name="name">Agency Multi-Company Rule</field>
+        <field name="model_id"
+               ref="model_alpha_agency"/>
 
-            <field name="model_id"
-                   ref="model_alpha_agency"/>
+        <field name="global" eval="True"/>
 
-            <field name="global" eval="True"/>
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
 
-            <field name="domain_force">
-                ['|',
-                    ('company_id', '=', False),
-                    ('company_id', 'in', company_ids)
-                ]
-            </field>
-        </record>
 
+    <!-- ==================================================== -->
+    <!-- AGENCY APPLICATION MULTI-COMPANY RULE -->
+    <!-- ==================================================== -->
 
-        <!-- ==================================================== -->
-        <!-- AGENCY APPLICATION MULTI-COMPANY RULE -->
-        <!-- ==================================================== -->
+    <record id="agency_application_company_rule" model="ir.rule">
+        <field name="name">Agency Application Multi-Company Rule</field>
 
-    
+        <field name="model_id"
+               ref="model_alpha_agency_application"/>
 
-        <!-- ==================================================== -->
-        <!-- AGENCY AUDIT MULTI-COMPANY RULE -->
-        <!-- ==================================================== -->
+        <field name="global" eval="True"/>
 
-        <record id="agency_audit_company_rule" model="ir.rule">
-            <field name="name">
-                Agency Audit Multi-Company Rule
-            </field>
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
 
-            <field name="model_id"
-                   ref="model_alpha_agency_audit"/>
 
-            <field name="global" eval="True"/>
+    <!-- ==================================================== -->
+    <!-- AGENCY AUDIT MULTI-COMPANY RULE -->
+    <!-- ==================================================== -->
 
-            <field name="domain_force">
-                ['|',
-                    ('company_id', '=', False),
-                    ('company_id', 'in', company_ids)
-                ]
-            </field>
-        </record>
+    <record id="agency_audit_company_rule" model="ir.rule">
+        <field name="name">
+            Agency Audit Multi-Company Rule
+        </field>
 
+        <field name="model_id"
+               ref="model_alpha_agency_audit"/>
 
-        <!-- ==================================================== -->
-        <!-- AGENCY LICENCE MULTI-COMPANY RULE -->
-        <!-- ==================================================== -->
+        <field name="global" eval="True"/>
 
-        <record id="agency_licence_company_rule" model="ir.rule">
-            <field name="name">
-                Agency Licence Multi-Company Rule
-            </field>
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
 
-            <field name="model_id"
-                   ref="model_alpha_agency_licence"/>
 
-            <field name="global" eval="True"/>
+    <!-- ==================================================== -->
+    <!-- AGENCY LICENCE MULTI-COMPANY RULE -->
+    <!-- ==================================================== -->
 
-            <field name="domain_force">
-                ['|',
-                    ('company_id', '=', False),
-                    ('company_id', 'in', company_ids)
-                ]
-            </field>
-        </record>
+    <record id="agency_licence_company_rule" model="ir.rule">
+        <field name="name">
+            Agency Licence Multi-Company Rule
+        </field>
 
+        <field name="model_id"
+               ref="model_alpha_agency_licence"/>
 
-        <!-- ==================================================== -->
-        <!-- AGENCY DEVICE MULTI-COMPANY RULE -->
-        <!-- ==================================================== -->
+        <field name="global" eval="True"/>
 
-        <record id="agency_device_company_rule" model="ir.rule">
-            <field name="name">
-                Agency Device Multi-Company Rule
-            </field>
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
 
-            <field name="model_id"
-                   ref="model_alpha_agency_device"/>
 
-            <field name="global" eval="True"/>
+    <!-- ==================================================== -->
+    <!-- AGENCY DEVICE MULTI-COMPANY RULE -->
+    <!-- ==================================================== -->
 
-            <field name="domain_force">
-                ['|',
-                    ('company_id', '=', False),
-                    ('company_id', 'in', company_ids)
-                ]
-            </field>
-        </record>
+    <record id="agency_device_company_rule" model="ir.rule">
+        <field name="name">
+            Agency Device Multi-Company Rule
+        </field>
 
-    </data>
+        <field name="model_id"
+               ref="model_alpha_agency_device"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="agency_workflow_company_rule" model="ir.rule">
+        <field name="name">Agency Workflow Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_agency_workflow"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="agency_application_document_company_rule" model="ir.rule">
+        <field name="name">Agency Application Document Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_agency_application_document"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="compliance_requirement_company_rule" model="ir.rule">
+        <field name="name">Compliance Requirement Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_compliance_requirement"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="compliance_checklist_company_rule" model="ir.rule">
+        <field name="name">Compliance Checklist Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_compliance_checklist"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="agency_audit_finding_company_rule" model="ir.rule">
+        <field name="name">Agency Audit Finding Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_agency_audit_finding"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="agency_audit_corrective_action_company_rule" model="ir.rule">
+        <field name="name">Agency Audit Corrective Action Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_agency_audit_corrective_action"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="agency_device_testing_result_company_rule" model="ir.rule">
+        <field name="name">Agency Device Testing Result Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_agency_device_testing_result"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="agency_workflow_version_company_rule" model="ir.rule">
+        <field name="name">Agency Workflow Version Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_agency_workflow_version"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="agency_workflow_step_company_rule" model="ir.rule">
+        <field name="name">Agency Workflow Step Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_agency_workflow_step"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="agency_workflow_approval_company_rule" model="ir.rule">
+        <field name="name">Agency Workflow Approval Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_agency_workflow_approval"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="agency_workflow_transition_company_rule" model="ir.rule">
+        <field name="name">Agency Workflow Transition Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_agency_workflow_transition"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
+    <record id="agency_credential_company_rule" model="ir.rule">
+        <field name="name">Agency Credential Multi-Company Rule</field>
+
+        <field name="model_id"
+               ref="model_alpha_agency_credential"/>
+
+        <field name="global" eval="True"/>
+
+        <field name="domain_force">
+            ['|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
+
 </odoo>

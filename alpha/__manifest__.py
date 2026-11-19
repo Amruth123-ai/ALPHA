@@ -62,7 +62,4 @@
     },
     "application": True,
     "installable": True,
-    "test": [
-        "tests/test_agency_lifecycle.py",
-    ],
 }

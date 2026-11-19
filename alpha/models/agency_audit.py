@@ -73,12 +73,12 @@ class AgencyAudit(models.Model):
     )
 
     company_id = fields.Many2one(
-    "res.company",
-    string="Company",
-    default=lambda self: self.env.company,
-    required=True,
-    index=True,
-)
+        "res.company",
+        string="Company",
+        default=lambda self: self.env.company,
+        required=True,
+        index=True,
+    )
 
     # ====================================================
     # Audit Configuration
@@ -301,6 +301,7 @@ class AgencyAuditFinding(models.Model):
     """Audit findings model (FR-12)."""
     _name = "alpha.agency.audit.finding"
     _description = "Audit Finding"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "severity desc, create_date"
 
     name = fields.Char(
@@ -375,6 +376,13 @@ class AgencyAuditFinding(models.Model):
         readonly=True,
         default=lambda self: self.env.user,
     )
+    company_id = fields.Many2one(
+        "res.company",
+        related="audit_id.company_id",
+        store=True,
+        index=True,
+        readonly=True,
+    )
 
     def action_assign_corrective_action(self):
         """Assign a corrective action to this finding."""
@@ -419,6 +427,7 @@ class AgencyAuditCorrectiveAction(models.Model):
     """Corrective actions for audit findings."""
     _name = "alpha.agency.audit.corrective.action"
     _description = "Audit Corrective Action"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "create_date"
 
     name = fields.Char(
@@ -480,6 +489,13 @@ class AgencyAuditCorrectiveAction(models.Model):
     )
     notes = fields.Text(
         string="Notes",
+    )
+    company_id = fields.Many2one(
+        "res.company",
+        related="audit_id.company_id",
+        store=True,
+        index=True,
+        readonly=True,
     )
 
     def action_start(self):

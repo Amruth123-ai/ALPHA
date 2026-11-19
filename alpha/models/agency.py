@@ -256,16 +256,16 @@ class Agency(models.Model):
             self.email = self.partner_id.email or False
             self.phone = self.partner_id.phone or False
             self.website = self.partner_id.website or False
-            if self.partner_id.address_line1:
-                self.address = self.partner_id.address_line1
+            if self.partner_id.street:
+                self.address = self.partner_id.street
             if self.partner_id.city:
                 self.city = self.partner_id.city
             if self.partner_id.state_id:
                 self.state_id = self.partner_id.state_id.id
             if self.partner_id.country_id:
                 self.country_id = self.partner_id.country_id.id
-            if self.partner_id.zip_code:
-                self.zip_code = self.partner_id.zip_code
+            if self.partner_id.zip:
+                self.zip_code = self.partner_id.zip
 
     # ====================================================
     # Constraints

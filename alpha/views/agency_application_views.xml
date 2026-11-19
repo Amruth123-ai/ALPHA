@@ -1,106 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
-        <!-- Form View -->
-        <record id="view_alpha_agency_application_form" model="ir.ui.view">
-            <field name="name">alpha.agency.application.form</field>
-            <field name="model">alpha.agency.application</field>
-            <field name="arch" type="xml">
-                <form string="Agency Application">
-                    <header>
-                        <button name="action_submit" string="Submit" type="object" class="oe_highlight" invisible="state != 'draft'"/>
-                        <button name="action_ai_scrutiny" string="Run AI Scrutiny" type="object" class="oe_highlight" invisible="state not in ('submitted', 'under_review')"/>
-                        <button name="action_approve" string="Approve" type="object" class="oe_highlight" invisible="state not in ('pending_approval', 'ai_scrutiny')" groups="alpha.group_alpha_agency_manager"/>
-                        <button name="action_return_to_agency" string="Return to Agency" type="object" invisible="state not in ('submitted', 'under_review', 'ai_scrutiny')"/>
-                        <button name="action_reject" string="Reject" type="object" invisible="state not in ('submitted', 'under_review', 'ai_scrutiny')" groups="alpha.group_alpha_agency_manager"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,submitted,ai_scrutiny,pending_approval,approved"/>
-                    </header>
-                    <sheet>
-                        <div class="oe_title">
-                            <h1>
-                                <field name="application_number" readonly="1"/> - <field name="name" placeholder="Application Title" required="1"/>
-                            </h1>
-                        </div>
+<odoo noupdate="1">
+    <!-- Form View -->
+    <record id="view_alpha_agency_application_form" model="ir.ui.view">
+        <field name="name">alpha.agency.application.form</field>
+        <field name="model">alpha.agency.application</field>
+        <field name="arch" type="xml">
+            <form string="Agency Application">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_ai_scrutiny" string="Run AI Scrutiny" type="object" class="oe_highlight" invisible="state not in ('submitted', 'under_review')"/>
+                    <button name="action_approve" string="Approve" type="object" class="oe_highlight" invisible="state not in ('pending_approval', 'ai_scrutiny')" groups="alpha.group_alpha_agency_manager"/>
+                    <button name="action_return_to_agency" string="Return to Agency" type="object" invisible="state not in ('submitted', 'under_review', 'ai_scrutiny')"/>
+                    <button name="action_reject" string="Reject" type="object" invisible="state not in ('submitted', 'under_review', 'ai_scrutiny')" groups="alpha.group_alpha_agency_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,ai_scrutiny,pending_approval,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="application_number" readonly="1"/> - <field name="name" placeholder="Application Title" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
                         <group>
-                            <group>
-                                <field name="agency_id"/>
-                                <field name="agency_type"/>
-                                <field name="partner_id"/>
-                                <field name="user_id"/>
-                            </group>
-                            <group>
-                                <field name="application_date"/>
-                                <field name="submission_date"/>
-                                <field name="approval_date"/>
-                                <field name="priority"/>
-                            </group>
+                            <field name="agency_id"/>
+                            <field name="agency_type"/>
+                            <field name="partner_id"/>
+                            <field name="user_id"/>
                         </group>
-                        <notebook>
-                            <page string="Compliance Requirements">
-                                <field name="compliance_requirement_ids" widget="many2many">
-                                    <list>
-                                        <field name="code"/>
-                                        <field name="name"/>
-                                    </list>
-                                </field>
-                            </page>
-                            <page string="Documents">
-                                <field name="document_ids">
-                                    <list editable="bottom">
-                                        <field name="name"/>
-                                        <field name="file_id"/>
-                                        <field name="mapping_id"/>
-                                        <field name="ai_validated"/>
-                                        <field name="officer_override"/>
-                                    </list>
-                                </field>
-                            </page>
-                            <page string="AI Scrutiny Results">
-                                <group>
-                                    <field name="ai_scrutiny_summary"/>
-                                    <field name="ai_results_json"/>
+                        <group>
+                            <field name="application_date"/>
+                            <field name="submission_date"/>
+                            <field name="approval_date"/>
+                            <field name="priority"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Compliance Requirements">
+                            <field name="compliance_requirement_ids" widget="many2many">
+                                <list>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Documents">
+                            <field name="document_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="file_id"/>
+                                    <field name="mapping_id"/>
+                                    <field name="ai_validated"/>
                                     <field name="officer_override"/>
-                                    <field name="override_reason"/>
-                                </group>
-                            </page>
-                            <page string="Approval Details">
-                                <group>
-                                    <field name="approver_id"/>
-                                    <field name="approver_comments"/>
-                                    <field name="rejection_reason"/>
-                                    <field name="return_reason"/>
-                                    <field name="sign_request_id"/>
-                                </group>
-                            </page>
-                        </notebook>
-                    </sheet>
-                    <chatter/>
-                </form>
-            </field>
-        </record>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="AI Scrutiny Results">
+                            <group>
+                                <field name="ai_scrutiny_summary"/>
+                                <field name="ai_results_json"/>
+                                <field name="officer_override"/>
+                                <field name="override_reason"/>
+                            </group>
+                        </page>
+                        <page string="Approval Details">
+                            <group>
+                                <field name="approver_id"/>
+                                <field name="approver_comments"/>
+                                <field name="rejection_reason"/>
+                                <field name="return_reason"/>
+                                <field name="sign_request_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
 
-        <!-- List View -->
-        <record id="view_alpha_agency_application_tree" model="ir.ui.view">
-            <field name="name">alpha.agency.application.tree</field>
-            <field name="model">alpha.agency.application</field>
-            <field name="arch" type="xml">
-                <list string="Agency Applications">
-                    <field name="application_number"/>
-                    <field name="name"/>
-                    <field name="agency_id"/>
-                    <field name="agency_type"/>
-                    <field name="submission_date"/>
-                    <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-warning="state in ['submitted', 'ai_scrutiny']" decoration-danger="state == 'rejected'"/>
-                </list>
-            </field>
-        </record>
+    <!-- List View -->
+    <record id="view_alpha_agency_application_list" model="ir.ui.view">
+        <field name="name">alpha.agency.application.list</field>
+        <field name="model">alpha.agency.application</field>
+        <field name="arch" type="xml">
+            <list string="Agency Applications">
+                <field name="application_number"/>
+                <field name="name"/>
+                <field name="agency_id"/>
+                <field name="agency_type"/>
+                <field name="submission_date"/>
+                <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-warning="state in ['submitted', 'ai_scrutiny']" decoration-danger="state == 'rejected'"/>
+            </list>
+        </field>
+    </record>
 
-        <!-- Action -->
-        <record id="action_alpha_agency_application" model="ir.actions.act_window">
-            <field name="name">Agency Applications</field>
-            <field name="res_model">alpha.agency.application</field>
-            <field name="view_mode">list,form</field>
-        </record>
-
+    <!-- Action -->
+    <record id="action_alpha_agency_application" model="ir.actions.act_window">
+        <field name="name">Agency Applications</field>
+        <field name="res_model">alpha.agency.application</field>
+        <field name="view_mode">list,form</field>
+    </record>
 
 </odoo>

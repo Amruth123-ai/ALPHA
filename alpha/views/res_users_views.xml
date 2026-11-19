@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<odoo noupdate="1">
 
     <record id="view_users_form_alpha" model="ir.ui.view">
         <field name="name">res.users.form.alpha</field>

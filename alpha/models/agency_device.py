@@ -44,11 +44,12 @@ class AgencyDevice(models.Model):
     )
 
     company_id = fields.Many2one(
-    "res.company",
-    related="agency_id.company_id",
-    store=True,
-    index=True,
-)
+        "res.company",
+        related="agency_id.company_id",
+        store=True,
+        index=True,
+        readonly=True,
+    )
     # ====================================================
     # Agency Reference
     # ====================================================
@@ -293,4 +294,11 @@ class DeviceTestingResult(models.Model):
         comodel_name="dms.file",
         string="Evidence",
         ondelete="set null",
+    )
+    company_id = fields.Many2one(
+        "res.company",
+        related="device_id.company_id",
+        store=True,
+        index=True,
+        readonly=True,
     )
