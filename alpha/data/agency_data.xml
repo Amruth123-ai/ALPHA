@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+        <!-- Default Compliance Requirements -->
+        <record id="compliance_req_1" model="alpha.compliance.requirement">
+            <field name="name">Valid Business Registration Certificate</field>
+            <field name="code">REQ_REG_CERT</field>
+            <field name="sequence">10</field>
+            <field name="description">Official government-issued business registration document proving legal entity status.</field>
+        </record>
+
+        <record id="compliance_req_2" model="alpha.compliance.requirement">
+            <field name="name">Tax Clearance Certificate</field>
+            <field name="code">REQ_TAX_CLEAR</field>
+            <field name="sequence">20</field>
+            <field name="description">Certificate demonstrating tax compliance and good standing with revenue authorities.</field>
+        </record>
+
+        <record id="compliance_req_3" model="alpha.compliance.requirement">
+            <field name="name">ISO 27001 Certification</field>
+            <field name="code">REQ_ISO_27001</field>
+            <field name="sequence">30</field>
+            <field name="description">Information security management system certification.</field>
+        </record>
+
+        <record id="compliance_req_4" model="alpha.compliance.requirement">
+            <field name="name">Financial Audit Report</field>
+            <field name="code">REQ_FIN_AUDIT</field>
+            <field name="sequence">40</field>
+            <field name="description">Audited financial statements for the last 2 fiscal years.</field>
+        </record>
+
+        <!-- Default Compliance Checklist -->
+        <record id="compliance_checklist_standard" model="alpha.compliance.checklist">
+            <field name="name">Standard Onboarding Checklist</field>
+            <field name="code">CHK_STANDARD</field>
+            <field name="version">1.0</field>
+            <field name="effective_date">2026-01-01</field>
+            <field name="requirement_ids" eval="[(6, 0, [ref('compliance_req_1'), ref('compliance_req_2'), ref('compliance_req_3'), ref('compliance_req_4')])]"/>
+        </record>
+
+
+</odoo>

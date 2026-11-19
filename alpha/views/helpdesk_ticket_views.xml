@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- Helpdesk Ticket Form Inheritance -->
+        <record id="view_helpdesk_ticket_form_inherit_alpha" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.form.inherit.alpha</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="alpha_agency_id"/>
+                    <field name="application_id" domain="[('agency_id', '=', alpha_agency_id)]"/>
+                    <field name="audit_id" domain="[('agency_id', '=', alpha_agency_id)]"/>
+                    <field name="licence_id" domain="[('agency_id', '=', alpha_agency_id)]"/>
+                    <field name="device_id" domain="[('agency_id', '=', alpha_agency_id)]"/>
+                </field>
+            </field>
+        </record>
+
+</odoo>

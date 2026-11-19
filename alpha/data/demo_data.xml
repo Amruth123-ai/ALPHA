@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+        <!-- Demo Data for Agency Lifecycle Management Platform -->
+
+        <!-- Demo Agencies -->
+        <record id="demo_agency_type_a_ho" model="alpha.agency">
+            <field name="name">Global Tech Solutions Ltd</field>
+            <field name="code">AGDEMO001</field>
+            <field name="agency_type">type_a</field>
+            <field name="organizational_unit">ho</field>
+            <field name="state">approved</field>
+            <field name="email">contact@globaltech.example</field>
+        </record>
+
+        <record id="demo_agency_type_b_ro" model="alpha.agency">
+            <field name="name">Regional Logistics Partners</field>
+            <field name="code">AGDEMO002</field>
+            <field name="agency_type">type_b</field>
+            <field name="organizational_unit">ro</field>
+            <field name="state">in_production</field>
+            <field name="email">info@regionallogistics.example</field>
+        </record>
+
+        <record id="demo_agency_type_c_tc" model="alpha.agency">
+            <field name="name">Tech Innovation Hub</field>
+            <field name="code">AGDEMO003</field>
+            <field name="agency_type">type_c</field>
+            <field name="organizational_unit">tc</field>
+            <field name="state">approved</field>
+            <field name="email">contact@techhub.example</field>
+        </record>
+
+        <!-- Demo Applications -->
+        <record id="demo_application_1" model="alpha.agency.application">
+            <field name="name">Network Equipment Certification Request</field>
+            <field name="agency_id" ref="demo_agency_type_a_ho"/>
+            <field name="agency_type">type_a</field>
+            <field name="application_date">2026-01-15</field>
+            <field name="submission_date">2026-01-15</field>
+            <field name="state">submitted</field>
+            <field name="priority">high</field>
+        </record>
+
+        <record id="demo_application_2" model="alpha.agency.application">
+            <field name="name">Software Platform Deployment Request</field>
+            <field name="agency_id" ref="demo_agency_type_b_ro"/>
+            <field name="agency_type">type_b</field>
+            <field name="application_date">2026-02-01</field>
+            <field name="submission_date">2026-02-01</field>
+            <field name="state">draft</field>
+            <field name="priority">medium</field>
+        </record>
+
+        <!-- Demo Audits -->
+        <record id="demo_audit_q1_2026" model="alpha.agency.audit">
+            <field name="name">Q1 2026 Financial Compliance Audit</field>
+            <field name="agency_id" ref="demo_agency_type_a_ho"/>
+            <field name="audit_type">financial</field>
+            <field name="cycle_type">quarterly</field>
+            <field name="priority">high</field>
+            <field name="scheduled_date">2026-04-01</field>
+            <field name="state">planned</field>
+        </record>
+
+        <record id="demo_audit_annual_2025" model="alpha.agency.audit">
+            <field name="name">Annual Compliance Audit 2025</field>
+            <field name="agency_id" ref="demo_agency_type_a_ho"/>
+            <field name="audit_type">annual</field>
+            <field name="cycle_type">annual</field>
+            <field name="priority">high</field>
+            <field name="scheduled_date">2025-12-01</field>
+            <field name="actual_end_date">2025-12-15</field>
+            <field name="state">closed</field>
+        </record>
+
+        <!-- Demo Licences -->
+        <record id="demo_licence_op_1" model="alpha.agency.licence">
+            <field name="name">Network Operations Licence</field>
+            <field name="licence_number">LICDEMO001</field>
+            <field name="agency_id" ref="demo_agency_type_a_ho"/>
+            <field name="licence_type">operational</field>
+            <field name="issue_date">2025-06-01</field>
+            <field name="expiry_date">2026-06-01</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="demo_licence_tech_1" model="alpha.agency.licence">
+            <field name="name">Technical Certification</field>
+            <field name="licence_number">LICDEMO002</field>
+            <field name="agency_id" ref="demo_agency_type_c_tc"/>
+            <field name="licence_type">technical</field>
+            <field name="issue_date">2025-09-01</field>
+            <field name="expiry_date">2026-09-01</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Demo Devices -->
+        <record id="demo_device_1" model="alpha.agency.device">
+            <field name="name">Network Switch Model X100</field>
+            <field name="device_code">DEVDEMO001</field>
+            <field name="agency_id" ref="demo_agency_type_a_ho"/>
+            <field name="manufacturer">TechCorp</field>
+            <field name="model">SW-X100</field>
+            <field name="serial_number">SN-X100-001</field>
+            <field name="testing_result">pass</field>
+            <field name="state">approved</field>
+            <field name="certification_date">2025-03-15</field>
+            <field name="expiry_date">2027-03-15</field>
+        </record>
+
+        <!-- Demo Credentials -->
+        <record id="demo_credential_iso" model="alpha.agency.credential">
+            <field name="name">ISO 27001 Information Security Certification</field>
+            <field name="credential_code">ISO-IS-2025</field>
+            <field name="agency_id" ref="demo_agency_type_a_ho"/>
+            <field name="credential_type">certification</field>
+            <field name="issuing_organization">International Standards Org</field>
+            <field name="issue_date">2025-01-01</field>
+            <field name="expiry_date">2026-01-01</field>
+        </record>
+
+</odoo>

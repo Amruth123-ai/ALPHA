@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- Workflow Form View -->
+        <record id="view_alpha_agency_workflow_form" model="ir.ui.view">
+            <field name="name">alpha.agency.workflow.form</field>
+            <field name="model">alpha.agency.workflow</field>
+            <field name="arch" type="xml">
+                <form string="Agency Workflow">
+                    <header>
+                        <button name="action_review" string="Send to Review" type="object" invisible="state != 'draft'"/>
+                        <button name="action_publish" string="Publish" type="object" class="oe_highlight" invisible="state != 'review'" groups="alpha.group_alpha_agency_manager"/>
+                        <button name="action_archive" string="Archive" type="object" invisible="state != 'published'" groups="alpha.group_alpha_agency_manager"/>
+                        <button name="action_create_version" string="Create New Version" type="object" invisible="state != 'published'"/>
+                        <field name="status" widget="statusbar" statusbar_visible="draft,review,published,archived"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="code" placeholder="Workflow Code" required="1"/> - <field name="name" placeholder="Workflow Name" required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="agency_type"/>
+                                <field name="document_type"/>
+                                <field name="is_configurable"/>
+                                <field name="is_versioned"/>
+                            </group>
+                            <group>
+                                <field name="current_version"/>
+                                <field name="active_version_id" readonly="1"/>
+                                <field name="last_modified_date" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Workflow Steps">
+                                <field name="step_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence"/>
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="step_type"/>
+                                        <field name="previous_step_code"/>
+                                        <field name="next_step_codes"/>
+                                        <field name="is_active"/>
+                                        <field name="is_required"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Workflow Versions">
+                                <field name="version_ids">
+                                    <list>
+                                        <field name="version_number"/>
+                                        <field name="name"/>
+                                        <field name="created_by"/>
+                                        <field name="create_date"/>
+                                        <field name="is_active"/>
+                                        <field name="is_approved"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Approval Rules">
+                                <field name="approval_rule_id"/>
+                            </page>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Workflow List View -->
+        <record id="view_alpha_agency_workflow_tree" model="ir.ui.view">
+            <field name="name">alpha.agency.workflow.tree</field>
+            <field name="model">alpha.agency.workflow</field>
+            <field name="arch" type="xml">
+                <list string="Agency Workflows">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="agency_type"/>
+                    <field name="document_type"/>
+                    <field name="current_version"/>
+                    <field name="status" widget="badge" decoration-success="status == 'published'" decoration-warning="status in ['draft', 'review']"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_alpha_agency_workflow" model="ir.actions.act_window">
+            <field name="name">Agency Workflows</field>
+            <field name="res_model">alpha.agency.workflow</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+</odoo>

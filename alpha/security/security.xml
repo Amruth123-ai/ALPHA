@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ==================================================== -->
+        <!-- MODULE CATEGORY -->
+        <!-- ==================================================== -->
+
+        <record id="module_category_alpha_agency" model="ir.module.category">
+            <field name="name">Agency Management</field>
+            <field name="description">
+                Helps manage agency lifecycle, onboarding, compliance, and audits.
+            </field>
+            <field name="sequence">20</field>
+        </record>
+
+
+        <!-- ==================================================== -->
+        <!-- ODOO 19 PRIVILEGE -->
+        <!-- ==================================================== -->
+
+        <record id="privilege_alpha_agency" model="res.groups.privilege">
+            <field name="name">Agency Management</field>
+            <field name="description">
+                Privileges for the Alpha Agency Management platform.
+            </field>
+            <field name="category_id" ref="module_category_alpha_agency"/>
+            <field name="sequence">20</field>
+        </record>
+
+
+        <!-- ==================================================== -->
+        <!-- AGENCY USER -->
+        <!-- ==================================================== -->
+
+        <record id="group_alpha_agency_user" model="res.groups">
+            <field name="name">Agency User</field>
+
+            <!-- Odoo 19 -->
+            <field name="privilege_id" ref="privilege_alpha_agency"/>
+
+            <field name="implied_ids"
+                   eval="[(4, ref('base.group_user'))]"/>
+
+            <field name="comment">
+                Users can view and create agency applications,
+                audits, and devices.
+            </field>
+        </record>
+
+
+        <!-- ==================================================== -->
+        <!-- AGENCY MANAGER -->
+        <!-- ==================================================== -->
+
+        <record id="group_alpha_agency_manager" model="res.groups">
+            <field name="name">Agency Manager</field>
+
+            <!-- Odoo 19 -->
+            <field name="privilege_id" ref="privilege_alpha_agency"/>
+
+            <field name="implied_ids"
+                   eval="[(4, ref('group_alpha_agency_user'))]"/>
+
+            <!-- Odoo 19: users field became user_ids -->
+            <field name="user_ids"
+                   eval="[
+                       (4, ref('base.user_root')),
+                       (4, ref('base.user_admin'))
+                   ]"/>
+
+            <field name="comment">
+                Managers have full access to all agency lifecycle
+                configurations and approvals.
+            </field>
+        </record>
+
+
+        <!-- ==================================================== -->
+        <!-- HEAD OFFICE -->
+        <!-- ==================================================== -->
+
+        <record id="group_alpha_ho" model="res.groups">
+            <field name="name">Head Office (HO)</field>
+
+            <!-- Odoo 19 -->
+            <field name="privilege_id" ref="privilege_alpha_agency"/>
+
+            <field name="implied_ids"
+                   eval="[(4, ref('group_alpha_agency_manager'))]"/>
+
+            <field name="comment">
+                Head Office organizational unit with overarching oversight.
+            </field>
+        </record>
+
+
+        <!-- ==================================================== -->
+        <!-- REGIONAL OFFICE -->
+        <!-- ==================================================== -->
+
+        <record id="group_alpha_ro" model="res.groups">
+            <field name="name">Regional Office (RO)</field>
+
+            <!-- Odoo 19 -->
+            <field name="privilege_id" ref="privilege_alpha_agency"/>
+
+            <field name="implied_ids"
+                   eval="[(4, ref('group_alpha_agency_user'))]"/>
+
+            <field name="comment">
+                Regional Office organizational unit.
+            </field>
+        </record>
+
+
+        <!-- ==================================================== -->
+        <!-- TECHNICAL CENTRE -->
+        <!-- ==================================================== -->
+
+        <record id="group_alpha_tc" model="res.groups">
+            <field name="name">Technical Centre (TC)</field>
+
+            <!-- Odoo 19 -->
+            <field name="privilege_id" ref="privilege_alpha_agency"/>
+
+            <field name="implied_ids"
+                   eval="[(4, ref('group_alpha_agency_user'))]"/>
+
+            <field name="comment">
+                Technical Centre for device testing and certification.
+            </field>
+        </record>
+
+
+        <!-- ==================================================== -->
+        <!-- RECORD RULES -->
+        <!-- ==================================================== -->
+
+
+        <!-- ==================================================== -->
+        <!-- AGENCY MULTI-COMPANY RULE -->
+        <!-- ==================================================== -->
+
+        <record id="agency_company_rule" model="ir.rule">
+            <field name="name">Agency Multi-Company Rule</field>
+
+            <field name="model_id"
+                   ref="model_alpha_agency"/>
+
+            <field name="global" eval="True"/>
+
+            <field name="domain_force">
+                ['|',
+                    ('company_id', '=', False),
+                    ('company_id', 'in', company_ids)
+                ]
+            </field>
+        </record>
+
+
+        <!-- ==================================================== -->
+        <!-- AGENCY APPLICATION MULTI-COMPANY RULE -->
+        <!-- ==================================================== -->
+
+    
+
+        <!-- ==================================================== -->
+        <!-- AGENCY AUDIT MULTI-COMPANY RULE -->
+        <!-- ==================================================== -->
+
+        <record id="agency_audit_company_rule" model="ir.rule">
+            <field name="name">
+                Agency Audit Multi-Company Rule
+            </field>
+
+            <field name="model_id"
+                   ref="model_alpha_agency_audit"/>
+
+            <field name="global" eval="True"/>
+
+            <field name="domain_force">
+                ['|',
+                    ('company_id', '=', False),
+                    ('company_id', 'in', company_ids)
+                ]
+            </field>
+        </record>
+
+
+        <!-- ==================================================== -->
+        <!-- AGENCY LICENCE MULTI-COMPANY RULE -->
+        <!-- ==================================================== -->
+
+        <record id="agency_licence_company_rule" model="ir.rule">
+            <field name="name">
+                Agency Licence Multi-Company Rule
+            </field>
+
+            <field name="model_id"
+                   ref="model_alpha_agency_licence"/>
+
+            <field name="global" eval="True"/>
+
+            <field name="domain_force">
+                ['|',
+                    ('company_id', '=', False),
+                    ('company_id', 'in', company_ids)
+                ]
+            </field>
+        </record>
+
+
+        <!-- ==================================================== -->
+        <!-- AGENCY DEVICE MULTI-COMPANY RULE -->
+        <!-- ==================================================== -->
+
+        <record id="agency_device_company_rule" model="ir.rule">
+            <field name="name">
+                Agency Device Multi-Company Rule
+            </field>
+
+            <field name="model_id"
+                   ref="model_alpha_agency_device"/>
+
+            <field name="global" eval="True"/>
+
+            <field name="domain_force">
+                ['|',
+                    ('company_id', '=', False),
+                    ('company_id', 'in', company_ids)
+                ]
+            </field>
+        </record>
+
+    </data>
+</odoo>
